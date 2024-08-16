@@ -38,14 +38,16 @@ class AppThemeData {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: primaryColor,
-        padding: const EdgeInsets.symmetric(vertical: 14),
-        textStyle: const TextStyle(
-          fontSize: 14,
-          letterSpacing: 0.5,
-        ),
-        foregroundColor: Colors.white,
-      ),
+          backgroundColor: primaryColor,
+          padding: const EdgeInsets.symmetric(vertical: 10,),
+          textStyle: const TextStyle(
+            fontSize: 24,
+            letterSpacing: 0.5,
+          ),
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          )),
     ),
   );
 }

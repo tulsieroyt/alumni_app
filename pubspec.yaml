@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.6
   get: ^4.6.6
   readmore: ^3.0.0
+  device_preview: ^1.2.0
+  device_frame: ^1.2.0
 
 dev_dependencies:
   flutter_test:

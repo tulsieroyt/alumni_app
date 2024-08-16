@@ -62,18 +62,18 @@ class _SignInScreenState extends State<SignInScreen> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        if (emailController.text.trim() ==
-                                'example@gmail.com' &&
-                            passwordController.text.trim() == '1234') {
+                      // if (_formKey.currentState!.validate()) {
+                      //   if (emailController.text.trim() ==
+                      //           'example@gmail.com' &&
+                      //       passwordController.text.trim() == '1234') {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const NavigationMenu(),
                             ),
                           );
-                        }
-                      }
+                        // }
+                      // }
                     },
                     child: const Text('Sign In'),
                   ),

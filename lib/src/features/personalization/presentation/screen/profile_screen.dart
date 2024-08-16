@@ -20,7 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             const SizedBox(height: 30),
             SizedBox(
-              height: 200,
+              height: 150,
               child: Stack(
                 children: [
                   Positioned(
@@ -29,8 +29,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     right: 0,
                     child: Center(
                       child: Container(
-                          height: 150,
-                          width: 150,
+                          height: 120,
+                          width: 120,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),
                             color: Colors.blue,
@@ -66,6 +66,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Text('tulsieroyt@gmail.com'),
               ],
             ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 36.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Connect',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 36),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Message',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
             const SizedBox(height: 20),
             const Row(
               children: [
