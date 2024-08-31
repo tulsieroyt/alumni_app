@@ -1,4 +1,7 @@
+import 'package:alumni_app/src/features/alumni/presentation/controllers/alumni_list_controller.dart';
+import 'package:alumni_app/src/features/personalization/presentation/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AlumniList extends StatefulWidget {
   const AlumniList({super.key});
@@ -8,6 +11,7 @@ class AlumniList extends StatefulWidget {
 }
 
 class _AlumniListState extends State<AlumniList> {
+  final alumniListController = Get.put(AlumniListController());
   String? selectedBatch;
   final List<String> batches = [
     '2016-17',
@@ -17,15 +21,6 @@ class _AlumniListState extends State<AlumniList> {
     '2020-21',
     '2021-22'
   ];
-
-  final List<Map<String, String>> alumni = List.generate(
-    10,
-    (index) => {
-      'name': 'Tulsie Chandra Barman',
-      'batch': 'CSE-18 2020-21',
-      'imagePath': 'assets/image/profile/tulsie.jpg'
-    },
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -82,29 +77,42 @@ class _AlumniListState extends State<AlumniList> {
                 const SizedBox(height: 16),
               ],
             ),
-            Expanded(
-              child: ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                itemCount: alumni.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 8),
-                itemBuilder: (context, index) {
-                  final alumnus = alumni[index];
-                  return ListTile(
-                    onTap: () {},
-                    tileColor: Colors.white,
-                    leading: CircleAvatar(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Image.asset(alumnus['imagePath']!),
-                      ),
-                    ),
-                    title: Text(alumnus['name']!),
-                    subtitle: Text(alumnus['batch']!),
-                    trailing: const Icon(Icons.arrow_forward_ios),
-                  );
-                },
+            Obx(
+              () => Expanded(
+                child: ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: alumniListController.allAlumniList.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 8),
+                  itemBuilder: (context, index) {
+                    final alumnus = alumniListController.allAlumniList[index];
+                    return alumnus.id != alumniListController.userId
+                        ? ListTile(
+                            onTap: () {
+                              Get.to(() => ProfileScreen(userId: alumnus.id));
+                            },
+                            tileColor: Colors.white,
+                            leading: SizedBox(
+                              height: 45,
+                              width: 45,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: alumnus.profilePicture.isEmpty
+                                    ? const CircleAvatar(
+                                        child: Icon(Icons.person),
+                                      )
+                                    : Image.network(alumnus.profilePicture),
+                              ),
+                            ),
+                            title: Text(
+                                '${alumnus.firstName} ${alumnus.lastName}'),
+                            subtitle: Text(alumnus.session),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                          )
+                        : null;
+                  },
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:alumni_app/src/features/personalization/presentation/controllers/profile_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,9 @@ import 'experience_section.dart';
 import 'social_link_section.dart';
 
 class AboutSection extends StatefulWidget {
-  const AboutSection({super.key});
+  const AboutSection({super.key, required this.profileScreenController});
+
+  final ProfileScreenController profileScreenController;
 
   @override
   State<AboutSection> createState() => _AboutSectionState();
@@ -51,13 +54,21 @@ class _AboutSectionState extends State<AboutSection> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 10),
-            const BioSection(),
+            BioSection(
+              profileScreenController: widget.profileScreenController,
+            ),
             const SizedBox(height: 20),
-            const EducationSection(),
+            EducationSection(
+              profileScreenController: widget.profileScreenController,
+            ),
             const SizedBox(height: 20),
-            const ExperienceSection(),
+            ExperienceSection(
+              profileScreenController: widget.profileScreenController,
+            ),
             const SizedBox(height: 20),
-            SocialLinkSection(links: links),
+            SocialLinkSection(
+              profileScreenController: widget.profileScreenController,
+            ),
             const SizedBox(height: 50)
           ],
         ),

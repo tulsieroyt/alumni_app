@@ -1,3 +1,4 @@
+import 'package:alumni_app/src/features/jobs/presentation/controllers/job_screen_controller.dart';
 import 'package:alumni_app/src/features/jobs/presentation/screen/job_details_screen.dart';
 import 'package:alumni_app/src/utility/theme.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,8 @@ class JobsScreen extends StatefulWidget {
 }
 
 class _JobsScreenState extends State<JobsScreen> {
+  final jobScreenController = Get.put(JobScreenController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,55 +74,63 @@ class _JobsScreenState extends State<JobsScreen> {
               ],
             ),
             Expanded(
-              child: ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 10,
-                separatorBuilder: (_, __) => const Divider(height: 3),
-                itemBuilder: (context, index) => InkWell(
-                  onTap: () {
-                    Get.to(const JobDetailsScreen());
-                  },
-                  child: Container(
-                    color: Colors.white,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          height: 50,
-                          width: 50,
-                          child: const Image(
-                            image: AssetImage('assets/image/facebook-logo.png'),
-                          ),
+              child: Obx(
+                () => ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: jobScreenController.userJobModelList.length,
+                  separatorBuilder: (_, __) => const Divider(height: 3),
+                  itemBuilder: (context, index) {
+                    final singleJob = jobScreenController.userJobModelList[index];
+                    print(singleJob);
+                    return InkWell(
+                      onTap: () {
+                        Get.to(JobDetailsScreen(userJobModel: singleJob));
+                      },
+                      child: Container(
+                        color: Colors.white,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              height: 50,
+                              width: 50,
+                              child: const Image(
+                                image:
+                                AssetImage('assets/image/facebook-logo.png'),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    singleJob.job.jobTitle,
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    singleJob.job.companyName,
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(singleJob.job.location),
+                                  Text(
+                                    '7 hours ago',
+                                    style: TextStyle(
+                                        color: AppThemeData.primaryColor),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
                         ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Flutter Developer',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              const Text(
-                                'Vivasoft Ltd',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              const Text('Dhaka, Bangladesh'),
-                              Text(
-                                '7 hours ago',
-                                style:
-                                    TextStyle(color: AppThemeData.primaryColor),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
             )

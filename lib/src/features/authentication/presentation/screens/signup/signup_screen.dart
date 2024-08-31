@@ -1,8 +1,9 @@
+import 'package:alumni_app/src/features/authentication/presentation/controllers/signup_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../../common/divider_widget.dart';
 import '../../../../../common/widgets/social_buttons.dart';
-import '../signin/signin_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -12,21 +13,15 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final fNameController = TextEditingController();
-  final lNameController = TextEditingController();
-  final emailController = TextEditingController();
-  final mobileNumberController = TextEditingController();
-  final passwordController = TextEditingController();
-  final GlobalKey<FormState> _signUpFormKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
+    final signUpController = Get.put(SignupController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Form(
-            key: _signUpFormKey,
+            key: signUpController.signUpFormKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -49,7 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 TextFormField(
-                  controller: fNameController,
+                  controller: signUpController.firstName,
                   decoration: const InputDecoration(labelText: 'First Name'),
                   validator: (value) {
                     if (value?.trim().isEmpty ?? true) {
@@ -60,7 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  controller: lNameController,
+                  controller: signUpController.lastName,
                   decoration: const InputDecoration(labelText: 'Last Name'),
                   validator: (value) {
                     if (value?.trim().isEmpty ?? true) {
@@ -71,7 +66,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  controller: emailController,
+                  controller: signUpController.email,
                   decoration: const InputDecoration(labelText: 'Email'),
                   validator: (value) {
                     if (value?.trim().isEmpty ?? true) {
@@ -82,7 +77,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  controller: mobileNumberController,
+                  controller: signUpController.phoneNumber,
                   decoration: const InputDecoration(labelText: 'Mobile'),
                   validator: (value) {
                     if (value?.trim().isEmpty ?? true) {
@@ -93,7 +88,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  controller: passwordController,
+                  controller: signUpController.session,
+                  decoration: const InputDecoration(labelText: 'Session'),
+                  validator: (value) {
+                    if (value?.trim().isEmpty ?? true) {
+                      return 'Enter your session';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: signUpController.password,
                   decoration: const InputDecoration(labelText: 'Password'),
                   validator: (value) {
                     if (value?.trim().isEmpty ?? true) {
@@ -106,61 +112,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
-                      if (_signUpFormKey.currentState!.validate()) {
-                        showDialog(
-                          context: context,
-                          builder: (context) => Dialog(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const SizedBox(height: 24),
-                                  const Center(
-                                    child: Text(
-                                      'Success',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w800,
-                                        color: Colors.green,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 24),
-                                  const Text(
-                                      'You have successfully created a new account'),
-                                  const SizedBox(height: 50),
-                                  const Center(child: Text('Go to')),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SignInScreen(),
-                                        ),
-                                      );
-                                    },
-                                    child: const Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 24.0),
-                                      child: Text(
-                                        'Sign in',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                    },
+                    onPressed: () => signUpController.createAccount(),
                     child: const Text(
                       'Create Account',
                       style: TextStyle(

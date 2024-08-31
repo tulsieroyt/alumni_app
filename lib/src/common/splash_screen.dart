@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../features/authentication/presentation/screens/signin/signin_screen.dart';
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -10,17 +7,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    Future.delayed(const Duration(seconds: 2)).then((value) {
-      ///---Move to next screen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const SignInScreen()),
-      );
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

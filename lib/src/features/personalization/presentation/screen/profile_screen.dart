@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../controllers/profile_controller.dart';
 import '../widgets/about_section.dart';
 import '../widgets/follow_button.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({super.key, required this.userId});
+
+  final String userId;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -13,12 +17,19 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    final ProfileScreenController profileScreenController =
+        Get.put(ProfileScreenController(userId: widget.userId));
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        appBar:
+            widget.userId != profileScreenController.user.uid ? AppBar() : null,
         body: Column(
           children: [
-            const SizedBox(height: 30),
+            widget.userId != profileScreenController.user.uid
+                ? Container()
+                : const SizedBox(height: 30),
             SizedBox(
               height: 150,
               child: Stack(
@@ -28,7 +39,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     left: 0,
                     right: 0,
                     child: Center(
-                      child: Container(
+                      child: Obx(
+                        () => Container(
                           height: 120,
                           width: 120,
                           decoration: BoxDecoration(
@@ -39,32 +51,62 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             padding: const EdgeInsets.all(4.0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(100),
-                              child: const Image(
-                                image: AssetImage(
-                                    'assets/image/profile/tulsie.jpg'),
-                              ),
+                              child: profileScreenController.userBasicInfo.value
+                                      .profilePicture.isEmpty
+                                  ? const CircleAvatar(
+                                      child: Icon(Icons.person),
+                                    )
+                                  : Image.network(profileScreenController
+                                      .userBasicInfo.value.profilePicture),
                             ),
-                          )),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  const Positioned(
-                    top: 0,
-                    right: 10,
-                    child: Icon(Icons.more_vert),
-                  )
+                  widget.userId != profileScreenController.user.uid
+                      ? Container()
+                      : Positioned(
+                          top: 0,
+                          right: 10,
+                          child: PopupMenuButton<String>(
+                            onSelected: (value) => profileScreenController
+                                .onMenuItemSelected(value),
+                            itemBuilder: (BuildContext context) {
+                              return [
+                                const PopupMenuItem(
+                                  value: 'edit',
+                                  child: Text('Edit Profile'),
+                                ),
+                                const PopupMenuItem(
+                                  value: 'logout',
+                                  child: Text('Log Out'),
+                                ),
+                                const PopupMenuItem(
+                                  value: 'delete',
+                                  child: Text('Delete Profile'),
+                                ),
+                              ];
+                            },
+                            icon: const Icon(Icons.more_vert),
+                          ),
+                        )
                 ],
               ),
             ),
             const SizedBox(height: 10),
-            //For name and email
-            const Column(
-              children: [
-                Text(
-                  'Tulsie Chandra Barman',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-                ),
-                Text('tulsieroyt@gmail.com'),
-              ],
+            Obx(
+              () => Column(
+                children: [
+                  Text(
+                    '${profileScreenController.userBasicInfo.value.firstName} ${profileScreenController.userBasicInfo.value.lastName} ',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 16),
+                  ),
+                  Text(profileScreenController.userBasicInfo.value.email),
+                  Text('Session: ${profileScreenController.userBasicInfo.value.session}')
+                ],
+              ),
             ),
             const SizedBox(height: 20),
             Padding(
@@ -99,7 +141,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
             const Row(
               children: [
@@ -117,11 +158,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 text: 'Posts',
               ),
             ]),
-            const Expanded(
+            Expanded(
               child: TabBarView(
                 children: [
-                  AboutSection(),
-                  Center(child: Text('Message')),
+                  AboutSection(
+                      profileScreenController: profileScreenController),
+                  const Center(child: Text('Message')),
                 ],
               ),
             )

@@ -1,6 +1,7 @@
+import 'package:alumni_app/src/features/authentication/presentation/controllers/signin_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../../../../../navigation_manu.dart';
 import '../../../../../common/divider_widget.dart';
 import '../../../../../common/widgets/social_buttons.dart';
 import '../signup/signup_screen.dart';
@@ -13,18 +14,15 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
+    final signInController = Get.put(SignInController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Form(
-            key: _formKey,
+            key: signInController.loginFormKey,
             child: Column(
               children: [
                 const SizedBox(height: 250),
@@ -34,7 +32,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  controller: emailController,
+                  controller: signInController.email,
                   decoration: const InputDecoration(hintText: 'Email'),
                   validator: (value) {
                     if (value?.trim().isEmpty ?? true) {
@@ -45,7 +43,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 const SizedBox(height: 8),
                 TextFormField(
-                  controller: passwordController,
+                  controller: signInController.password,
                   decoration: const InputDecoration(
                     hintText: 'Password',
                     suffixIcon: Icon(Icons.remove_red_eye),
@@ -61,20 +59,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // if (_formKey.currentState!.validate()) {
-                      //   if (emailController.text.trim() ==
-                      //           'example@gmail.com' &&
-                      //       passwordController.text.trim() == '1234') {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const NavigationMenu(),
-                            ),
-                          );
-                        // }
-                      // }
-                    },
+                    onPressed: () =>
+                        signInController.signInWithEmailAndPassword(),
                     child: const Text('Sign In'),
                   ),
                 ),
