@@ -153,7 +153,7 @@ Create, manage normal and job posts.
 
 ## Contributors
 
-- **Tulsie Chandra Barman** - [GitHub Profile](https://github.com/your-profile)
+- **Tulsie Chandra Barman** - [GitHub Profile](https://github.com/tulsieroyt/)
 
 Contributions are welcome! Feel free to submit a pull request or raise issues.
 
